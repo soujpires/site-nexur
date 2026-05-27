@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexur CRM — O CRM para Corretores de Seguros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#090e1a;--navy2:#0d1420;--navy3:#111827;--card:#131c2e;
+  --border:rgba(6,182,212,0.15);--blue:#2563eb;--cyan:#06b6d4;
+  --cyan2:#67e8f9;--green:#34d399;--purple:#a78bfa;
+  --text:#e2e8f0;--muted:#64748b;--light:#94a3b8;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--text);font-family:'Inter',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:68px;background:rgba(9,14,26,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.logo-text{font-family:'Exo 2',sans-serif;font-weight:900;font-size:22px;letter-spacing:3px;background:linear-gradient(90deg,#2563eb,#06b6d4,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none}
+.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+.nav-links a{color:var(--light);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-cta{background:linear-gradient(135deg,var(--blue),var(--cyan))!important;color:#fff!important;padding:9px 22px;border-radius:8px;font-weight:600!important}
+
+/* HERO */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 5% 80px;overflow:hidden}
+.glow-blob{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+.blob-blue{width:500px;height:500px;background:rgba(37,99,235,0.18);top:-100px;left:-100px}
+.blob-cyan{width:400px;height:400px;background:rgba(6,182,212,0.14);bottom:0;right:0}
+.blob-green{width:300px;height:300px;background:rgba(52,211,153,0.10);top:40%;right:10%}
+.orbital-bg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;height:900px;pointer-events:none}
+.orbital-bg ellipse{fill:none;stroke-width:1;transform-origin:center}
+.orb1{stroke:rgba(6,182,212,0.12);animation:spin 18s linear infinite}
+.orb2{stroke:rgba(37,99,235,0.10);animation:spin 28s linear infinite reverse}
+.orb3{stroke:rgba(52,211,153,0.07);animation:spin 42s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-content{position:relative;z-index:2;max-width:820px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.3);color:var(--cyan2);font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:6px 16px;border-radius:100px;margin-bottom:28px}
+.hero-badge .dot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+h1{font-family:'Exo 2',sans-serif;font-size:clamp(2.4rem,5.5vw,4.2rem);font-weight:900;line-height:1.1;letter-spacing:-1px;margin-bottom:24px;color:#f0f6ff}
+.gradient-text{background:linear-gradient(90deg,var(--blue),var(--cyan),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(1rem,1.8vw,1.15rem);color:var(--light);max-width:600px;margin:0 auto 44px;font-weight:300;line-height:1.75}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;font-weight:700;font-size:15px;padding:14px 32px;border-radius:10px;text-decoration:none;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 0 40px rgba(6,182,212,0.3)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 60px rgba(6,182,212,0.45)}
+.btn-ghost{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--light);font-weight:500;font-size:15px;padding:14px 28px;border-radius:10px;text-decoration:none;border:1px solid rgba(100,116,139,0.3);transition:border-color .2s,color .2s}
+.btn-ghost:hover{border-color:var(--cyan);color:var(--cyan2)}
+.stats-row{display:flex;align-items:center;justify-content:center;gap:40px;margin-top:64px;flex-wrap:wrap}
+.stat-item{text-align:center}
+.stat-num{font-family:'Exo 2',sans-serif;font-size:2rem;font-weight:900;background:linear-gradient(90deg,var(--cyan),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:12px;color:var(--muted);margin-top:2px}
+.stat-sep{width:1px;height:40px;background:var(--border)}
+
+/* ── MOCKUP ANIMADO ── */
+.mockup-section{padding:40px 5% 100px;position:relative;z-index:2}
+.mockup-wrapper{max-width:1100px;margin:0 auto}
+.mockup-frame{background:var(--card);border:1px solid rgba(6,182,212,0.2);border-radius:16px;overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,0.6),0 0 60px rgba(6,182,212,0.06)}
+.mockup-topbar{background:#0a1020;padding:12px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+.mock-dots{display:flex;gap:6px}
+.mock-dot{width:10px;height:10px;border-radius:50%}
+.d-r{background:#ef4444}.d-y{background:#f59e0b}.d-g{background:#10b981}
+.mock-url{flex:1;background:rgba(255,255,255,0.04);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--muted);transition:all .4s}
+.mock-body{display:flex;height:480px}
+
+/* sidebar */
+.mock-sidebar{width:200px;background:#090e1a;border-right:1px solid var(--border);display:flex;flex-direction:column;padding:16px 0;gap:2px;flex-shrink:0}
+.mock-sidebar-section{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:12px 16px 6px}
+.mock-nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;font-size:13px;color:var(--light);border-radius:0;cursor:pointer;transition:all .25s;margin:0 8px;border-radius:8px}
+.mock-nav-item svg{width:16px;height:16px;flex-shrink:0;opacity:.7;transition:opacity .25s}
+.mock-nav-item.active{background:rgba(6,182,212,0.12);color:var(--cyan2)}
+.mock-nav-item.active svg{opacity:1;color:var(--cyan)}
+.mock-nav-item:hover:not(.active){background:rgba(255,255,255,0.04)}
+
+/* main area */
+.mock-main{flex:1;padding:20px 24px;background:var(--navy3);overflow:hidden;display:flex;flex-direction:column}
+.mock-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.mock-title{font-family:'Exo 2',sans-serif;font-size:17px;font-weight:700;color:#e2e8f0;transition:all .3s}
+.mock-add-btn{font-size:11px;color:var(--muted);background:var(--navy2);border:1px solid var(--border);padding:5px 12px;border-radius:6px}
+
+/* dashboard metrics */
+.mock-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;transition:all .4s}
+.mock-metric{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px}
+.mock-metric-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mock-metric-icon svg{width:16px;height:16px}
+.mock-metric-val{font-size:10px;color:var(--muted)}
+.mock-metric-val strong{display:block;font-size:14px;color:#e2e8f0;font-weight:600}
+
+/* kanban */
+.mock-kanban{display:flex;gap:10px;flex:1;overflow:hidden;transition:all .3s}
+.mock-col{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.mock-col-head{font-size:11px;font-weight:600;color:var(--light);display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
+.mock-col-total{font-size:10px;color:var(--muted);flex-shrink:0}
+.mock-badge{background:rgba(6,182,212,0.15);color:var(--cyan);font-size:10px;padding:1px 6px;border-radius:4px}
+.mock-card{background:rgba(255,255,255,0.04);border:1px solid rgba(6,182,212,0.2);border-radius:7px;padding:9px;font-size:11px}
+.mock-card-name{color:var(--cyan2);font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:5px}
+.mock-card-name svg{width:11px;height:11px;flex-shrink:0}
+.mock-card-tag{color:var(--muted);font-size:10px;margin-bottom:3px;display:flex;align-items:center;gap:4px}
+.mock-card-tag svg{width:10px;height:10px}
+.mock-card-val{color:var(--green);font-weight:600;font-size:11px}
+
+/* cursor simulado */
+.mock-cursor{position:absolute;width:16px;height:20px;pointer-events:none;z-index:50;transition:top .6s cubic-bezier(.4,0,.2,1),left .6s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 0 4px rgba(6,182,212,0.6))}
+.mock-cursor svg{width:16px;height:20px}
+.mock-cursor-click{position:absolute;width:24px;height:24px;border-radius:50%;background:rgba(6,182,212,0.3);transform:translate(-50%,-50%) scale(0);pointer-events:none;z-index:49;transition:transform .25s,opacity .25s}
+.mock-cursor-click.pop{transform:translate(-50%,-50%) scale(1);opacity:0}
+
+/* ── COPY "O QUE TE FALTA" ── */
+#copy-falta{padding:100px 5%;position:relative;z-index:2}
+.copy-falta-inner{max-width:1100px;margin:0 auto}
+.copy-headline{font-family:'Exo 2',sans-serif;font-size:clamp(2rem,4.5vw,3.6rem);font-weight:900;line-height:1.1;color:#f0f6ff;margin-bottom:48px}
+.copy-headline .hl-cyan{color:var(--cyan)}
+.copy-headline .hl-purple{color:var(--purple)}
+.copy-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px}
+.copy-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px}
+.copy-card-label{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.label-bad{color:#f87171}
+.label-good{color:var(--green)}
+.chaos-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.chaos-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.chaos-item svg{width:22px;height:22px;opacity:.5}
+.chaos-arrows{display:grid;grid-template-columns:1fr 1fr;gap:4px;opacity:.3}
+.chaos-arrow{height:1px;background:var(--light);position:relative}
+.chaos-result{display:flex;align-items:center;gap:8px;font-size:13px;color:#f87171;margin-top:4px}
+.chaos-result svg{width:16px;height:16px;flex-shrink:0}
+.flow-steps{display:flex;flex-direction:column;gap:0}
+.flow-step{display:flex;align-items:center;gap:14px;padding:10px 0}
+.flow-step-icon{width:40px;height:40px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.flow-step-icon svg{width:18px;height:18px}
+.flow-connector{width:2px;height:20px;margin-left:19px;background:linear-gradient(180deg,var(--cyan),var(--blue))}
+.flow-step-label{font-size:14px;font-weight:500;color:#e2e8f0}
+.flow-result{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--green);margin-top:12px}
+.flow-result svg{width:16px;height:16px;flex-shrink:0}
+.copy-bottom-card{background:var(--card);border:1px solid rgba(167,139,250,0.25);border-radius:20px;padding:32px 36px;display:flex;align-items:center;gap:24px}
+.copy-bottom-icon{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,rgba(37,99,235,0.3),rgba(167,139,250,0.3));border:1px solid rgba(167,139,250,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.copy-bottom-icon svg{width:28px;height:28px;color:var(--purple)}
+.copy-bottom-text h3{font-family:'Exo 2',sans-serif;font-size:1.5rem;font-weight:800;color:#f0f6ff;margin-bottom:4px}
+.copy-bottom-text h3 span{color:var(--purple)}
+.copy-bottom-text p{font-size:14px;color:var(--light);font-weight:300}
+.copy-tagline{margin-top:20px;text-align:center;font-size:13px;color:var(--muted);letter-spacing:.5px}
+.copy-tagline strong{color:var(--cyan);font-weight:600}
+
+/* ── FEATURES ── */
+#features{padding:100px 5%;position:relative;z-index:2}
+.section-label{display:block;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--cyan);margin-bottom:14px}
+.section-sep{width:80px;height:3px;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:2px;margin-bottom:24px}
+.section-title{font-family:'Exo 2',sans-serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;line-height:1.15;color:#f0f6ff;margin-bottom:16px}
+.section-sub{font-size:1rem;color:var(--light);max-width:520px;font-weight:300}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-top:56px}
+.feature-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;transition:border-color .25s,transform .25s;position:relative;overflow:hidden}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));opacity:0;transition:opacity .25s}
+.feature-card:hover{border-color:rgba(6,182,212,0.35);transform:translateY(-4px)}
+.feature-card:hover::before{opacity:1}
+.feature-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;background:linear-gradient(135deg,rgba(37,99,235,0.2),rgba(6,182,212,0.2));border:1px solid rgba(6,182,212,0.2)}
+.feature-icon svg{width:26px;height:26px;color:var(--cyan)}
+.feature-card h3{font-family:'Exo 2',sans-serif;font-size:1.15rem;font-weight:700;color:#f0f6ff;margin-bottom:12px}
+.feature-card p{font-size:14px;color:var(--light);line-height:1.65;font-weight:300}
+.feature-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+.ftag{background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.2);color:var(--cyan2);font-size:11px;padding:3px 10px;border-radius:100px;font-weight:500}
+
+/* ── PERSONALIZAÇÃO ── */
+#personalizacao{padding:80px 5% 100px;position:relative;z-index:2;background:linear-gradient(180deg,transparent,rgba(37,99,235,0.04),transparent)}
+.custom-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;margin-top:56px;max-width:1100px;margin-left:auto;margin-right:auto}
+.custom-visual{display:flex;flex-direction:column;gap:14px}
+.custom-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 24px;display:flex;align-items:center;gap:16px;transition:border-color .3s,transform .3s}
+.custom-card:hover{border-color:rgba(6,182,212,0.4);transform:translateX(6px)}
+.custom-card-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.custom-card-icon svg{width:22px;height:22px}
+.custom-card h4{font-family:'Exo 2',sans-serif;font-size:1rem;font-weight:700;color:#f0f6ff;margin-bottom:4px}
+.custom-card p{font-size:13px;color:var(--light);font-weight:300}
+.custom-text{}
+.custom-text .section-title{margin-top:0}
+.custom-quote{background:var(--card);border-left:3px solid var(--cyan);border-radius:0 12px 12px 0;padding:20px 24px;margin-top:28px;font-size:15px;color:var(--light);font-weight:300;line-height:1.7;font-style:italic}
+.custom-quote strong{color:var(--cyan2);font-style:normal;font-weight:600}
+
+/* ── DEPARTMENTS ── */
+#departments{padding:80px 5% 100px;position:relative;z-index:2}
+.dept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px;max-width:1100px;margin-left:auto;margin-right:auto}
+.dept-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px 28px;text-align:center;position:relative;overflow:hidden;transition:transform .3s,border-color .3s}
+.dept-card:hover{transform:translateY(-6px);border-color:rgba(6,182,212,0.4)}
+.dept-number{position:absolute;top:20px;right:24px;font-family:'Exo 2',sans-serif;font-size:3.5rem;font-weight:900;color:rgba(6,182,212,0.06);line-height:1}
+.dept-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;border:1px solid rgba(6,182,212,0.2);background:linear-gradient(135deg,rgba(37,99,235,0.2),rgba(6,182,212,0.2))}
+.dept-icon svg{width:28px;height:28px;color:var(--cyan)}
+.dept-card h3{font-family:'Exo 2',sans-serif;font-size:1.4rem;font-weight:800;color:#f0f6ff;margin-bottom:12px}
+.dept-card p{font-size:13.5px;color:var(--light);line-height:1.6;font-weight:300}
+.dept-pill{display:inline-block;margin-top:20px;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.25);color:var(--cyan);font-size:11px;font-weight:600;padding:5px 14px;border-radius:100px}
+
+/* ── HOW ── */
+#how{padding:100px 5%;position:relative;z-index:2}
+.steps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:60px;position:relative;max-width:1100px;margin-left:auto;margin-right:auto}
+.steps-row::before{content:'';position:absolute;top:28px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,var(--blue),var(--cyan),var(--green));opacity:.35}
+.step-item{text-align:center;padding:0 16px}
+.step-num{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Exo 2',sans-serif;font-size:1.2rem;font-weight:900;color:#fff;margin:0 auto 20px;position:relative;z-index:1;box-shadow:0 0 0 6px rgba(6,182,212,0.1)}
+.step-item h4{font-family:'Exo 2',sans-serif;font-size:1rem;font-weight:700;color:#f0f6ff;margin-bottom:10px}
+.step-item p{font-size:13px;color:var(--light);line-height:1.6;font-weight:300}
+
+/* ── REGISTER ── */
+#cadastro{padding:100px 5%;position:relative;z-index:2}
+.register-wrapper{max-width:560px;margin:0 auto;text-align:center}
+.register-card{background:var(--card);border:1px solid rgba(6,182,212,0.25);border-radius:24px;padding:52px 44px;margin-top:40px;position:relative;overflow:hidden}
+.register-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--cyan),var(--green))}
+.register-glow{position:absolute;width:300px;height:300px;background:radial-gradient(circle,rgba(6,182,212,0.07) 0%,transparent 70%);top:-80px;right:-80px;pointer-events:none}
+.form-group{margin-bottom:16px;text-align:left}
+.form-group label{display:block;font-size:13px;font-weight:500;color:var(--light);margin-bottom:7px}
+.form-group input,
+.form-group select{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(6,182,212,0.2);border-radius:10px;padding:13px 16px;font-size:14px;color:var(--text);font-family:'Inter',sans-serif;transition:border-color .2s,background .2s;outline:none;-webkit-appearance:none}
+.form-group select option{background:#131c2e;color:var(--text)}
+.form-group input:focus,
+.form-group select:focus{border-color:var(--cyan);background:rgba(6,182,212,0.05)}
+.form-group input::placeholder{color:var(--muted)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.btn-register{width:100%;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;font-family:'Inter',sans-serif;font-weight:700;font-size:15px;padding:15px;border-radius:10px;border:none;cursor:pointer;margin-top:8px;transition:transform .2s,box-shadow .2s;box-shadow:0 0 30px rgba(6,182,212,0.25)}
+.btn-register:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(6,182,212,0.4)}
+.register-note{font-size:12px;color:var(--muted);margin-top:16px;line-height:1.5}
+.register-note a{color:var(--cyan);text-decoration:none}
+.form-success{display:none;text-align:center;padding:20px 0}
+.check-circle{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+.check-circle svg{width:36px;height:36px;color:#fff}
+.form-success h3{font-family:'Exo 2',sans-serif;font-size:1.4rem;color:#f0f6ff;margin-bottom:12px}
+.form-success p{color:var(--light);font-size:14px;line-height:1.6}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:40px 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;position:relative;z-index:2}
+.footer-logo{font-family:'Exo 2',sans-serif;font-weight:900;font-size:18px;letter-spacing:3px;background:linear-gradient(90deg,#2563eb,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.footer-copy{font-size:13px;color:var(--muted)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--cyan)}
+
+/* UTILS */
+.fade-in{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.mx-auto{margin:0 auto}
+.text-center{text-align:center}
+
+@media(max-width:900px){
+  .custom-grid,.copy-grid{grid-template-columns:1fr}
+  .dept-grid{grid-template-columns:1fr}
+  .steps-row{grid-template-columns:1fr 1fr;gap:40px}
+  .steps-row::before{display:none}
+  .mock-sidebar{width:52px}
+  .mock-nav-item span{display:none}
+  .mock-sidebar-section{display:none}
+  .mock-metrics{grid-template-columns:repeat(2,1fr)}
+  .mock-body{height:360px}
+  .form-row{grid-template-columns:1fr}
+  .register-card{padding:32px 24px}
+  footer{flex-direction:column;text-align:center}
+  .stat-sep{display:none}
+  .nav-links li:not(:last-child){display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo-text">NEXUR</a>
+  <ul class="nav-links">
+    <li><a href="#features">Funcionalidades</a></li>
+    <li><a href="#personalizacao">Personalização</a></li>
+    <li><a href="#departments">Departamentos</a></li>
+    <li><a href="#cadastro" class="nav-cta">Testar Grátis</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="glow-blob blob-blue"></div>
+  <div class="glow-blob blob-cyan"></div>
+  <div class="glow-blob blob-green"></div>
+  <svg class="orbital-bg" viewBox="0 0 900 900" xmlns="http://www.w3.org/2000/svg">
+    <ellipse class="orb1" cx="450" cy="450" rx="380" ry="140" transform="rotate(-20 450 450)"/>
+    <ellipse class="orb2" cx="450" cy="450" rx="300" ry="110" transform="rotate(15 450 450)"/>
+    <ellipse class="orb3" cx="450" cy="450" rx="430" ry="160" transform="rotate(35 450 450)"/>
+  </svg>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span>Plataforma em Beta — Vagas Limitadas</div>
+    <h1>O CRM que a sua<br><span class="gradient-text">corretora de seguros</span><br>sempre precisou</h1>
+    <p class="hero-sub">Gerencie todo o ciclo comercial, operacional e de sinistros em um único lugar. Pipelines personalizados por departamento, construídos do jeito da sua corretora.</p>
+    <div class="hero-actions">
+      <a href="#cadastro" class="btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        Começar Teste Gratuito
+      </a>
+      <a href="#copy-falta" class="btn-ghost">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M10 8l6 4-6 4V8z"/></svg>
+        Ver como funciona
+      </a>
+    </div>
+    <div class="stats-row">
+      <div class="stat-item"><div class="stat-num">3</div><div class="stat-label">Departamentos integrados</div></div>
+      <div class="stat-sep"></div>
+      <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Pipelines personalizados</div></div>
+      <div class="stat-sep"></div>
+      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Grátis no beta</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- MOCKUP ANIMADO -->
+<section class="mockup-section fade-in">
+  <div class="mockup-wrapper">
+    <div class="mockup-frame">
+      <div class="mockup-topbar">
+        <div class="mock-dots">
+          <div class="mock-dot d-r"></div>
+          <div class="mock-dot d-y"></div>
+          <div class="mock-dot d-g"></div>
+        </div>
+        <div class="mock-url" id="mock-url-bar">🔒 app.nexur.com.br / Comercial</div>
+      </div>
+      <div class="mock-body" style="position:relative">
+
+        <!-- CURSOR -->
+        <div class="mock-cursor" id="mock-cursor" style="top:80px;left:20px">
+          <svg viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0 0L0 15L4 11L7 18L9 17L6 10L11 10Z" fill="white" stroke="rgba(6,182,212,0.8)" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="mock-cursor-click" id="mock-cursor-click"></div>
+
+        <!-- SIDEBAR -->
+        <div class="mock-sidebar" id="mock-sidebar">
+          <div class="mock-sidebar-section">Departamentos</div>
+
+          <div class="mock-nav-item" id="nav-comercial">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            <span>Comercial</span>
+          </div>
+          <div class="mock-nav-item" id="nav-operacional">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            <span>Operacional</span>
+          </div>
+          <div class="mock-nav-item" id="nav-sinistro">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>Sinistros</span>
+          </div>
+
+          <div class="mock-sidebar-section" style="margin-top:8px">Pessoal</div>
+
+          <div class="mock-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>Agenda</span>
+          </div>
+          <div class="mock-nav-item" style="margin-top:auto">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+            <span>Configurações</span>
+          </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="mock-main" id="mock-main">
+          <div class="mock-header-row">
+            <span class="mock-title" id="mock-dept-title">Comercial — Seguro Auto</span>
+            <div class="mock-add-btn">+ Novo Item</div>
+          </div>
+
+          <!-- METRICS (só Comercial) -->
+          <div class="mock-metrics" id="mock-metrics-row">
+            <div class="mock-metric">
+              <div class="mock-metric-icon" style="background:rgba(6,182,212,0.12)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+              </div>
+              <div class="mock-metric-val"><span>Leads</span><strong>24</strong></div>
+            </div>
+            <div class="mock-metric">
+              <div class="mock-metric-icon" style="background:rgba(52,211,153,0.12)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+              </div>
+              <div class="mock-metric-val"><span>Valor Total</span><strong>R$ 87.4k</strong></div>
+            </div>
+            <div class="mock-metric">
+              <div class="mock-metric-icon" style="background:rgba(251,191,36,0.12)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+              </div>
+              <div class="mock-metric-val"><span>Comissão</span><strong>R$ 12.8k</strong></div>
+            </div>
+            <div class="mock-metric">
+              <div class="mock-metric-icon" style="background:rgba(139,92,246,0.12)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              </div>
+              <div class="mock-metric-val"><span>Conversão</span><strong>34%</strong></div>
+            </div>
+          </div>
+
+          <!-- KANBAN -->
+          <div class="mock-kanban" id="mock-kanban">
+            <!-- preenchido pelo JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COPY "O QUE TE FALTA" -->
+<section id="copy-falta">
+  <div class="copy-falta-inner">
+    <div class="fade-in">
+      <h2 class="copy-headline">
+        Talvez o que te falta<br>não é mais <span class="hl-cyan">lead.</span><br>É <span class="hl-purple">organização.</span>
+      </h2>
+    </div>
+
+    <div class="copy-grid fade-in">
+      <!-- SEM ORGANIZAÇÃO -->
+      <div class="copy-card">
+        <div class="copy-card-label label-bad">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          Sem organização
+        </div>
+        <div class="chaos-grid">
+          <div class="chaos-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            WhatsApp
+          </div>
+          <div class="chaos-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            E-mail
+          </div>
+          <div class="chaos-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            Caderno
+          </div>
+          <div class="chaos-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
+            Planilha
+          </div>
+        </div>
+        <div class="chaos-result">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          <span>Perde tempo. Perde oportunidades.</span>
+        </div>
+      </div>
+
+      <!-- COM ORGANIZAÇÃO -->
+      <div class="copy-card" style="border-color:rgba(6,182,212,0.25)">
+        <div class="copy-card-label label-good">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Com organização
+        </div>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-step-icon" style="border-color:var(--cyan);color:var(--cyan)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            </div>
+            <span class="flow-step-label">Lead captado</span>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">
+            <div class="flow-step-icon" style="border-color:var(--blue);color:var(--blue)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <span class="flow-step-label">Proposta enviada</span>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">
+            <div class="flow-step-icon" style="border-color:var(--purple);color:var(--purple)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <span class="flow-step-label">Apólice emitida</span>
+          </div>
+          <div class="flow-connector"></div>
+          <div class="flow-step">
+            <div class="flow-step-icon" style="border-color:var(--green);color:var(--green)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span class="flow-step-label">Fechamento</span>
+          </div>
+        </div>
+        <div class="flow-result">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>Ganha tempo. Ganha resultado.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="copy-bottom-card fade-in">
+      <div class="copy-bottom-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+      </div>
+      <div class="copy-bottom-text">
+        <h3>Venda não é sorte. É <span>processo.</span></h3>
+        <p>É isso que estamos construindo. Um CRM feito para corretor, pensado como corretor pensa.</p>
+      </div>
+    </div>
+    <p class="copy-tagline fade-in">Venda não se perde na negociação. Se perde <strong>no processo.</strong></p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="fade-in">
+      <span class="section-label">Funcionalidades</span>
+      <div class="section-sep"></div>
+      <h2 class="section-title">Tudo que sua corretora<br>precisa para crescer</h2>
+      <p class="section-sub">Do lead ao sinistro, cada etapa da sua operação organizada, visível e sob controle.</p>
+    </div>
+    <div class="features-grid fade-in">
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3>Pipelines por Departamento</h3>
+        <p>Crie pipelines independentes para cada ramo: auto, vida, residencial, empresarial. Cada equipe com seu próprio funil, sem misturar informação.</p>
+        <div class="feature-tags"><span class="ftag">Kanban</span><span class="ftag">Multi-pipeline</span><span class="ftag">Por ramo</span></div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <h3>Fluxos Operacionais Personalizados</h3>
+        <p>Desenhe fluxos para você ou sua equipe não se perder: emissão, endosso, gestão de parcelas. Cada etapa com responsável e status visível.</p>
+        <div class="feature-tags"><span class="ftag">Emissão</span><span class="ftag">Endosso</span><span class="ftag">Parcelas</span></div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h3>Gestão de Sinistros</h3>
+        <p>Abra, acompanhe e resolva sinistros com workflow dedicado. Cada caso tem seu pipeline próprio — nunca mais perca prazo ou deixe cliente sem retorno.</p>
+        <div class="feature-tags"><span class="ftag">Workflow</span><span class="ftag">SLA</span><span class="ftag">Histórico</span></div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        </div>
+        <h3>Métricas em Tempo Real</h3>
+        <p>Acompanhe valor total, comissões e taxa de conversão de cada pipeline com dashboards por departamento. Gestão com dados, não com achismo.</p>
+        <div class="feature-tags"><span class="ftag">Dashboard</span><span class="ftag">KPIs</span><span class="ftag">Por pipeline</span></div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <h3>Agenda Integrada</h3>
+        <p>Reuniões, follow-ups, vencimentos e renovações num calendário conectado à operação. Nada passa despercebido na rotina do corretor.</p>
+        <div class="feature-tags"><span class="ftag">Agenda</span><span class="ftag">Follow-up</span><span class="ftag">Renovações</span></div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+        </div>
+        <h3>Controle de Acesso</h3>
+        <p>Defina permissões por departamento, cargo e usuário. Cada colaborador vê e opera exatamente o que precisa — sem complexidade desnecessária.</p>
+        <div class="feature-tags"><span class="ftag">Perfis</span><span class="ftag">Permissões</span><span class="ftag">Multi-usuário</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PERSONALIZAÇÃO -->
+<section id="personalizacao">
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="custom-grid">
+      <div class="custom-visual fade-in">
+        <div class="custom-card">
+          <div class="custom-card-icon" style="background:linear-gradient(135deg,rgba(37,99,235,0.2),rgba(6,182,212,0.2));border:1px solid rgba(6,182,212,0.2)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div>
+            <h4>Pipelines do seu jeito</h4>
+            <p>Colunas com os nomes das suas etapas reais. Não o que o sistema acha que você precisa.</p>
+          </div>
+        </div>
+        <div class="custom-card">
+          <div class="custom-card-icon" style="background:linear-gradient(135deg,rgba(167,139,250,0.2),rgba(37,99,235,0.2));border:1px solid rgba(167,139,250,0.2)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </div>
+          <div>
+            <h4>Formulários personalizados</h4>
+            <p>Capture os dados que importam para o seu ramo. Cada campo criado por você, para o seu processo.</p>
+          </div>
+        </div>
+        <div class="custom-card">
+          <div class="custom-card-icon" style="background:linear-gradient(135deg,rgba(52,211,153,0.2),rgba(6,182,212,0.2));border:1px solid rgba(52,211,153,0.2)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+          </div>
+          <div>
+            <h4>Fluxos operacionais próprios</h4>
+            <p>Desenhe o fluxo da sua equipe do zero. Sem template genérico que não encaixa na realidade da corretora.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="custom-text fade-in">
+        <span class="section-label">Personalização Total</span>
+        <div class="section-sep"></div>
+        <h2 class="section-title">Construído para<br>a sua realidade</h2>
+        <p class="section-sub">Cada corretora tem um jeito de trabalhar. No Nexur você desenha os pipelines, cria os formulários e define os fluxos do jeito que faz sentido para o seu negócio — não para um negócio genérico.</p>
+        <div class="custom-quote">
+          "Chega de adaptar o seu processo para caber em um software. O <strong>software precisa se adaptar a você.</strong>"
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPARTMENTS -->
+<section id="departments">
+  <div style="max-width:1100px;margin:0 auto;text-align:center">
+    <div class="fade-in">
+      <span class="section-label">Departamentos</span>
+      <div class="section-sep" style="margin:0 auto 24px"></div>
+      <h2 class="section-title">Como um gestor que<br>caminha pela empresa</h2>
+      <p class="section-sub" style="margin:0 auto">Acesse cada área da sua corretora como se estivesse passando de sala em sala — tudo conectado, nada perdido.</p>
+    </div>
+    <div class="dept-grid fade-in">
+      <div class="dept-card">
+        <div class="dept-number">01</div>
+        <div class="dept-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <h3>Comercial</h3>
+        <p>Pipelines por ramo de seguro com dashboard de métricas. Acompanhe leads, cotações, follow-ups e fechamentos de cada equipe separadamente.</p>
+        <span class="dept-pill">Multi-pipeline por ramo</span>
+      </div>
+      <div class="dept-card">
+        <div class="dept-number">02</div>
+        <div class="dept-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Operacional</h3>
+        <p>Desenhe fluxos para sua equipe não se perder: emissão, endosso, gestão de parcelas. Cada etapa com responsável, status e histórico.</p>
+        <span class="dept-pill">Fluxo pós-venda</span>
+      </div>
+      <div class="dept-card">
+        <div class="dept-number">03</div>
+        <div class="dept-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Sinistro</h3>
+        <p>Departamento dedicado para abertura, acompanhamento e resolução de sinistros. Pipeline próprio para que nenhum caso fique sem atenção.</p>
+        <span class="dept-pill">Workflow de sinistros</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div style="max-width:1100px;margin:0 auto;text-align:center">
+    <div class="fade-in">
+      <span class="section-label">Como Funciona</span>
+      <div class="section-sep" style="margin:0 auto 24px"></div>
+      <h2 class="section-title">Comece em minutos</h2>
+      <p class="section-sub" style="margin:0 auto">Sem instalação, sem complicação. Cadastre-se, configure sua corretora e comece a trabalhar.</p>
+    </div>
+    <div class="steps-row fade-in">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <h4>Cadastre-se</h4>
+        <p>Insira seu e-mail e crie sua senha via link de confirmação. Acesso imediato.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <h4>Configure</h4>
+        <p>Crie departamentos, pipelines com suas colunas e convide sua equipe.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <h4>Importe leads</h4>
+        <p>Suba seus contatos e organize o funil de vendas de cada ramo.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <h4>Gerencie tudo</h4>
+        <p>Comercial, operacional e sinistros em um só lugar, com sua equipe.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTER -->
+<section id="cadastro">
+  <div class="register-wrapper">
+    <div class="fade-in">
+      <span class="section-label">Acesso Beta Gratuito</span>
+      <div class="section-sep" style="margin:0 auto 24px"></div>
+      <h2 class="section-title">Teste o Nexur<br>gratuitamente</h2>
+      <p class="section-sub" style="margin:0 auto">Vagas limitadas para o beta. Cadastre-se e receba o link de acesso no seu e-mail.</p>
+    </div>
+    <div class="register-card fade-in">
+      <div class="register-glow"></div>
+      <div id="register-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="text" id="f-nome" placeholder="Seu nome">
+          </div>
+          <div class="form-group">
+            <label>Sobrenome</label>
+            <input type="text" id="f-sobrenome" placeholder="Seu sobrenome">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>E-mail profissional</label>
+          <input type="email" id="f-email" placeholder="voce@corretora.com.br">
+        </div>
+        <div class="form-group">
+          <label>Nome da corretora</label>
+          <input type="text" id="f-corretora" placeholder="Ex: Corretora Santos Seguros">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Telefone / WhatsApp</label>
+            <input type="tel" id="f-tel" placeholder="(62) 9 0000-0000">
+          </div>
+          <div class="form-group">
+            <label>Nº de corretores</label>
+            <select id="f-size">
+              <option value="" disabled selected>Selecione</option>
+              <option>Só eu</option>
+              <option>2 a 5</option>
+              <option>6 a 15</option>
+              <option>16 a 30</option>
+              <option>Mais de 30</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-register" onclick="handleRegister()">
+          Quero testar o Nexur gratuitamente
+        </button>
+        <p class="register-note">
+          Você receberá um e-mail de confirmação para criar sua senha.<br>
+          Sem cartão de crédito. <a href="#">Termos de uso</a> · <a href="#">Privacidade</a>
+        </p>
+      </div>
+      <div class="form-success" id="form-success">
+        <div class="check-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3>Cadastro realizado!</h3>
+        <p>Enviamos um e-mail de confirmação para<br><strong id="success-email" style="color:var(--cyan)"></strong></p>
+        <p style="margin-top:12px;font-size:13px;color:var(--muted)">Clique no link do e-mail para criar sua senha e acessar o sistema.<br>Não recebeu? Verifique a pasta de spam.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">NEXUR</span>
+  <span class="footer-copy">© 2025 Nexur CRM · Todos os direitos reservados</span>
+  <div class="footer-links">
+    <a href="#">Termos de Uso</a>
+    <a href="#">Privacidade</a>
+    <a href="#">Contato</a>
+  </div>
+</footer>
+
+<script>
+// ── FADE IN ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+// ── KANBAN DATA ──
+const depts = {
+  comercial: {
+    title: 'Comercial — Seguro Auto',
+    url: 'app.nexur.com.br / Comercial',
+    showMetrics: true,
+    cols: [
+      { name: 'Lead', badge: 8, total: 'R$ 28.200', card: { name: 'José dos Santos', tag: 'Automóvel', val: 'R$ 2.332,90' } },
+      { name: 'Cotação', badge: 5, total: 'R$ 19.400', card: { name: 'Maria Silva', tag: 'Automóvel', val: 'R$ 4.180,00' } },
+      { name: 'Enviada', badge: 4, total: 'R$ 15.600', card: null },
+      { name: 'Follow Up', badge: 3, total: 'R$ 11.200', card: null },
+      { name: 'Ganho ✓', badge: 4, total: 'R$ 13.000', card: null, accent: true },
+    ]
+  },
+  operacional: {
+    title: 'Operacional — Emissão',
+    url: 'app.nexur.com.br / Operacional',
+    showMetrics: false,
+    cols: [
+      { name: 'A emitir', badge: 6, total: '6 apólices', card: { name: 'Carlos Andrade', tag: 'Vida', val: 'Apólice #0082' } },
+      { name: 'Em análise', badge: 3, total: '3 processos', card: { name: 'Fernanda Lima', tag: 'Auto', val: 'Endosso #0041' } },
+      { name: 'Pendente docs', badge: 2, total: '2 aguardando', card: null },
+      { name: 'Emitida ✓', badge: 9, total: '9 concluídas', card: null, accent: true },
+    ]
+  },
+  sinistro: {
+    title: 'Sinistros — Em andamento',
+    url: 'app.nexur.com.br / Sinistros',
+    showMetrics: false,
+    cols: [
+      { name: 'Aberto', badge: 4, total: '4 ocorrências', card: { name: 'Roberto Alves', tag: 'Colisão — Auto', val: 'Sin. #0019' } },
+      { name: 'Em vistoria', badge: 2, total: '2 em campo', card: null },
+      { name: 'Regulação', badge: 3, total: '3 processos', card: { name: 'Ana Costa', tag: 'Residencial', val: 'Sin. #0022' } },
+      { name: 'Encerrado ✓', badge: 7, total: '7 resolvidos', card: null, accent: true },
+    ]
+  }
+};
+
+function personIcon() {
+  return `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+}
+function tagIcon() {
+  return `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>`;
+}
+
+function renderKanban(deptKey) {
+  const d = depts[deptKey];
+  document.getElementById('mock-dept-title').textContent = d.title;
+  document.getElementById('mock-url-bar').textContent = '🔒 ' + d.url;
+
+  const metricsRow = document.getElementById('mock-metrics-row');
+  metricsRow.style.display = d.showMetrics ? 'grid' : 'none';
+
+  const kanban = document.getElementById('mock-kanban');
+  kanban.innerHTML = d.cols.map(col => `
+    <div class="mock-col" style="${col.accent ? 'border-color:rgba(52,211,153,0.25)' : ''}">
+      <div class="mock-col-head" style="${col.accent ? 'color:#34d399' : ''}">
+        ${col.name}
+        <span class="mock-badge" style="${col.accent ? 'background:rgba(52,211,153,0.15);color:#34d399' : ''}">${col.badge}</span>
+      </div>
+      <div class="mock-col-total">${col.total}</div>
+      ${col.card ? `<div class="mock-card">
+        <div class="mock-card-name">${personIcon()} ${col.card.name}</div>
+        <div class="mock-card-tag">${tagIcon()} ${col.card.tag}</div>
+        <div class="mock-card-val">${col.card.val}</div>
+      </div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ── CURSOR ANIMATION ──
+let currentDept = 'comercial';
+const navItems = {
+  comercial:   document.getElementById('nav-comercial'),
+  operacional: document.getElementById('nav-operacional'),
+  sinistro:    document.getElementById('nav-sinistro'),
+};
+const cursor = document.getElementById('mock-cursor');
+const clickRipple = document.getElementById('mock-cursor-click');
+const sidebar = document.getElementById('mock-sidebar');
+
+function setActiveNav(key) {
+  Object.values(navItems).forEach(el => el.classList.remove('active'));
+  navItems[key].classList.add('active');
+}
+
+function getCursorTarget(key) {
+  const item = navItems[key];
+  const sb = sidebar.getBoundingClientRect();
+  const it = item.getBoundingClientRect();
+  return {
+    top:  it.top  - sb.top  + 10,
+    left: it.left - sb.left + 10,
+  };
+}
+
+function animateCursor(key, onArrive) {
+  const pos = getCursorTarget(key);
+  cursor.style.top  = pos.top  + 'px';
+  cursor.style.left = pos.left + 'px';
+  setTimeout(() => {
+    // click ripple
+    clickRipple.style.top  = (pos.top  + 8) + 'px';
+    clickRipple.style.left = (pos.left + 8) + 'px';
+    clickRipple.classList.add('pop');
+    setTimeout(() => { clickRipple.classList.remove('pop'); }, 300);
+    if (onArrive) onArrive();
+  }, 650);
+}
+
+function runDemoLoop() {
+  const sequence = ['operacional', 'sinistro', 'comercial'];
+  let i = 0;
+  function next() {
+    const key = sequence[i % sequence.length];
+    animateCursor(key, () => {
+      setActiveNav(key);
+      renderKanban(key);
+      currentDept = key;
+      i++;
+      setTimeout(next, 2800);
+    });
+  }
+  setTimeout(next, 2000);
+}
+
+// init
+renderKanban('comercial');
+setActiveNav('comercial');
+runDemoLoop();
+
+// ── FORM ──
+function handleRegister() {
+  const nome      = document.getElementById('f-nome').value.trim();
+  const email     = document.getElementById('f-email').value.trim();
+  const corretora = document.getElementById('f-corretora').value.trim();
+  if (!nome)                          { alert('Informe seu nome.');            return; }
+  if (!email || !email.includes('@')) { alert('Informe um e-mail válido.');    return; }
+  if (!corretora)                     { alert('Informe o nome da corretora.'); return; }
+  document.getElementById('success-email').textContent = email;
+  document.getElementById('register-form').style.display = 'none';
+  document.getElementById('form-success').style.display  = 'block';
+}
+
+const tel = document.getElementById('f-tel');
+tel.addEventListener('input', function() {
+  let v = this.value.replace(/\D/g,'').slice(0,11);
+  if      (v.length > 7) v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+  else if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+  this.value = v;
+});
+</script>
+</body>
+</html>
